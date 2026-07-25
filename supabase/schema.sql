@@ -42,8 +42,12 @@ create table posts (
 -- Row Level Security (RLS): by default Postgres lets any logged-in request read any row.
 -- These policies say "you may only ever see/touch rows belonging to your own couple" —
 -- this is what actually keeps couple A's photos private from couple B, at the database level.
+--
+-- couples itself is deliberately left without RLS: a row here is just an id + timestamp,
+-- nothing sensitive, and it has to be createable before the profile that will link to it
+-- even exists. Actual privacy is enforced on profiles/pairing_codes/posts/storage below,
+-- which is what actually gates who can read a couple's content.
 alter table profiles enable row level security;
-alter table couples enable row level security;
 alter table pairing_codes enable row level security;
 alter table posts enable row level security;
 
@@ -55,11 +59,6 @@ create policy "update own profile" on profiles
 
 create policy "insert own profile" on profiles
   for insert with check (id = auth.uid());
-
-create policy "read own couple" on couples
-  for select using (
-    id in (select couple_id from profiles where id = auth.uid())
-  );
 
 create policy "read/use pairing codes" on pairing_codes
   for select using (true); -- entering a code requires looking it up before you're linked
