@@ -2,12 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { getCurrentProfile } from "@/lib/getCurrentProfile";
 import { getSignedUrl } from "@/lib/media";
 import NewPostForm from "@/components/NewPostForm";
 import PostCard from "@/components/PostCard";
+import NavBar from "@/components/NavBar";
 
 // This page depends on the logged-in user's session, so it can't be pre-built
 // as static HTML — it has to run fresh each time someone visits it.
@@ -47,52 +47,50 @@ export default function FeedPage() {
     load();
   }, [router, loadPosts]);
 
-  async function handleSignOut() {
-    await supabase.auth.signOut();
-    router.push("/");
-  }
-
   if (!profile) {
     return (
-      <main className="flex flex-1 items-center justify-center bg-pink-50">
-        <p className="text-gray-500">Loading…</p>
+      <main className="flex flex-1 items-center justify-center">
+        <p className="animate-pulse text-ink-400">Loading…</p>
       </main>
     );
   }
 
   return (
-    <main className="flex flex-1 flex-col items-center gap-4 bg-pink-50 px-4 py-6">
-      <div className="flex w-full max-w-md items-center justify-between">
-        <h1 className="text-xl font-bold text-pink-600">Your feed</h1>
-        <div className="flex gap-3 text-sm">
-          <Link href="/timeline" className="font-medium text-pink-600">
-            Timeline
-          </Link>
-          <button onClick={handleSignOut} className="text-gray-500">
-            Sign out
-          </button>
+    <>
+      <NavBar profile={profile} />
+      <main className="flex flex-1 flex-col items-center gap-4 px-4 py-6">
+        <div className="w-full max-w-md animate-fade-up">
+          <NewPostForm
+            coupleId={profile.couple_id}
+            userId={profile.id}
+            onPosted={() => loadPosts(profile.couple_id)}
+          />
         </div>
-      </div>
 
-      <div className="w-full max-w-md">
-        <NewPostForm
-          coupleId={profile.couple_id}
-          userId={profile.id}
-          onPosted={() => loadPosts(profile.couple_id)}
-        />
-      </div>
-
-      <div className="flex w-full max-w-md flex-col gap-4">
-        {loadingPosts && <p className="text-center text-gray-500">Loading…</p>}
-        {!loadingPosts && posts.length === 0 && (
-          <p className="text-center text-gray-500">
-            Nothing posted yet — take the first photo together!
-          </p>
-        )}
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
-      </div>
-    </main>
+        <div className="flex w-full max-w-md flex-col gap-4">
+          {loadingPosts &&
+            [0, 1].map((i) => (
+              <div key={i} className="h-72 w-full animate-shimmer rounded-2xl" />
+            ))}
+          {!loadingPosts && posts.length === 0 && (
+            <div className="flex flex-col items-center gap-2 rounded-2xl bg-white/70 py-14 text-center shadow-soft">
+              <span className="text-3xl">🤍</span>
+              <p className="text-ink-500">
+                Nothing posted yet — take the first photo together!
+              </p>
+            </div>
+          )}
+          {posts.map((post, i) => (
+            <div
+              key={post.id}
+              className="animate-fade-up"
+              style={{ animationDelay: `${Math.min(i, 6) * 40}ms` }}
+            >
+              <PostCard post={post} />
+            </div>
+          ))}
+        </div>
+      </main>
+    </>
   );
 }

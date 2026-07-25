@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff8f6;
+  --foreground: #3d2b30;
+
+  --color-primary-50: #fff5f7;
+  --color-primary-100: #ffe4ea;
+  --color-primary-200: #ffc9d4;
+  --color-primary-300: #ffa0b4;
+  --color-primary-400: #fb6f93;
+  --color-primary-500: #ef4470;
+  --color-primary-600: #d92662;
+  --color-primary-700: #b31650;
+  --color-primary-800: #8f1140;
+  --color-primary-900: #5c0e2c;
+
+  --color-accent-400: #f2b544;
+  --color-accent-500: #e59d1f;
+
+  --color-ink-50: #fbf7f5;
+  --color-ink-100: #f3e9e6;
+  --color-ink-400: #a7898f;
+  --color-ink-500: #85666c;
+  --color-ink-600: #6b4d53;
+  --color-ink-700: #513740;
+  --color-ink-900: #2e1f24;
+
+  --shadow-soft: 0 1px 2px rgba(93, 30, 55, 0.04), 0 8px 24px -8px rgba(93, 30, 55, 0.14);
+  --shadow-pop: 0 4px 10px rgba(93, 30, 55, 0.08), 0 16px 40px -12px rgba(93, 30, 55, 0.22);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+
+  --color-accent-400: var(--color-accent-400);
+  --color-accent-500: var(--color-accent-500);
+
+  --color-ink-50: var(--color-ink-50);
+  --color-ink-100: var(--color-ink-100);
+  --color-ink-400: var(--color-ink-400);
+  --color-ink-500: var(--color-ink-500);
+  --color-ink-600: var(--color-ink-600);
+  --color-ink-700: var(--color-ink-700);
+  --color-ink-900: var(--color-ink-900);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
+  --font-display: var(--font-fraunces);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --shadow-soft: var(--shadow-soft);
+  --shadow-pop: var(--shadow-pop);
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(255, 201, 212, 0.55) 0%, transparent 55%),
+    radial-gradient(900px 500px at 110% 8%, rgba(242, 181, 68, 0.18) 0%, transparent 45%),
+    var(--background);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.35s ease-out both;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, var(--color-ink-100) 25%, var(--color-primary-100) 37%, var(--color-ink-100) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
 }

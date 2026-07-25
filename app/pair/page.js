@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { getCurrentProfile } from "@/lib/getCurrentProfile";
 import { generatePairingCode } from "@/lib/pairingCode";
+import Card from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +18,7 @@ export default function PairPage() {
   const [joinCode, setJoinCode] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [joining, setJoining] = useState(false);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -85,6 +89,7 @@ export default function PairPage() {
   async function handleJoin(e) {
     e.preventDefault();
     setError("");
+    setJoining(true);
 
     const code = joinCode.trim().toUpperCase();
     const { data: found, error: lookupError } = await supabase
@@ -96,10 +101,12 @@ export default function PairPage() {
 
     if (lookupError || !found) {
       setError("That code doesn't look right, or it's already been used.");
+      setJoining(false);
       return;
     }
     if (found.created_by === profile.id) {
       setError("That's your own code — get one from your partner instead.");
+      setJoining(false);
       return;
     }
 
@@ -109,6 +116,7 @@ export default function PairPage() {
       .eq("id", profile.id);
     if (updateProfileError) {
       setError(updateProfileError.message);
+      setJoining(false);
       return;
     }
 
@@ -119,45 +127,46 @@ export default function PairPage() {
 
   if (loading) {
     return (
-      <main className="flex flex-1 items-center justify-center bg-pink-50">
-        <p className="text-gray-500">Loading…</p>
+      <main className="flex flex-1 items-center justify-center">
+        <p className="animate-pulse text-ink-400">Setting things up…</p>
       </main>
     );
   }
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-8 bg-pink-50 px-6 py-12">
-      <div className="flex w-full max-w-xs flex-col items-center gap-3 text-center">
-        <h1 className="text-2xl font-bold text-pink-600">Link up with your partner</h1>
-        <p className="text-gray-600">Share this code with them:</p>
+    <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-16">
+      <Card className="w-full max-w-xs p-6 text-center animate-fade-up">
+        <h1 className="font-display text-2xl font-semibold text-ink-900">
+          Link up with your partner
+        </h1>
+        <p className="mt-2 text-sm text-ink-500">Share this code with them:</p>
         <button
           onClick={handleCopy}
-          className="w-full rounded-lg border-2 border-dashed border-pink-400 bg-white py-4 text-3xl font-bold tracking-[0.3em] text-pink-600"
+          className="mt-4 w-full rounded-xl border-2 border-dashed border-primary-300 bg-primary-50 py-5 font-display text-3xl font-semibold tracking-[0.3em] text-primary-700 transition-colors hover:bg-primary-100 active:scale-[0.98]"
         >
           {myCode}
         </button>
-        <p className="text-sm text-gray-500">{copied ? "Copied!" : "Tap to copy"}</p>
-      </div>
+        <p className="mt-2 text-sm font-medium text-primary-500">
+          {copied ? "Copied ✓" : "Tap to copy"}
+        </p>
+      </Card>
 
-      <div className="w-full max-w-xs border-t border-pink-200 pt-8 text-center">
-        <p className="mb-3 text-gray-600">Got a code from them instead?</p>
+      <Card className="w-full max-w-xs p-6 text-center animate-fade-up">
+        <p className="mb-3 text-sm text-ink-500">Got a code from them instead?</p>
         <form onSubmit={handleJoin} className="flex flex-col gap-3">
-          <input
+          <Input
             type="text"
             placeholder="Enter their code"
             value={joinCode}
             onChange={(e) => setJoinCode(e.target.value)}
-            className="rounded-lg border border-pink-200 px-4 py-3 text-center uppercase tracking-widest"
+            className="text-center uppercase tracking-widest"
           />
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
-            type="submit"
-            className="rounded-lg bg-pink-500 px-6 py-3 font-medium text-white"
-          >
-            Link accounts
-          </button>
+          {error && <p className="text-sm text-primary-700">{error}</p>}
+          <Button type="submit" disabled={joining || !joinCode} className="w-full">
+            {joining ? "Linking…" : "Link accounts"}
+          </Button>
         </form>
-      </div>
+      </Card>
     </main>
   );
 }
