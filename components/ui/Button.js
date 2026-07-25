@@ -1,9 +1,9 @@
 const variants = {
   primary:
-    "bg-primary-500 text-white shadow-soft hover:bg-primary-600 active:scale-[0.98] disabled:hover:bg-primary-500",
+    "bg-gradient-to-r from-primary-500 to-accent-500 text-white shadow-glow hover:brightness-110 active:scale-[0.98] disabled:hover:brightness-100",
   secondary:
-    "border border-primary-200 bg-white text-primary-700 hover:bg-primary-50 active:scale-[0.98]",
-  ghost: "text-ink-500 hover:bg-ink-50 hover:text-ink-700",
+    "border border-white/15 bg-white/[0.04] text-ink-900 hover:bg-white/[0.08] active:scale-[0.98]",
+  ghost: "text-ink-500 hover:bg-white/[0.06] hover:text-ink-700",
 };
 
 export default function Button({

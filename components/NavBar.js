@@ -20,13 +20,13 @@ export default function NavBar({ profile }) {
   }
 
   return (
-    <header className="sticky top-0 z-10 w-full border-b border-primary-100/70 bg-primary-50/80 backdrop-blur-md">
+    <header className="sticky top-0 z-10 w-full border-b border-white/10 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-2xl items-center justify-between px-4 py-3">
-        <Link href="/feed" className="font-display text-lg font-semibold text-primary-700">
+        <Link href="/feed" className="font-display text-lg font-semibold text-ink-900">
           Us
         </Link>
 
-        <nav className="flex items-center gap-1 rounded-full bg-white/70 p-1 shadow-soft">
+        <nav className="flex items-center gap-1 rounded-full bg-white/[0.06] p-1 shadow-soft">
           {LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -36,7 +36,7 @@ export default function NavBar({ profile }) {
                 className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                   active
                     ? "bg-primary-500 text-white"
-                    : "text-ink-600 hover:text-primary-600"
+                    : "text-ink-600 hover:text-primary-400"
                 }`}
               >
                 {link.label}
@@ -49,7 +49,7 @@ export default function NavBar({ profile }) {
           <Avatar name={profile?.display_name} className="h-8 w-8 text-sm" />
           <button
             onClick={handleSignOut}
-            className="text-xs font-medium text-ink-400 transition-colors hover:text-primary-600"
+            className="text-xs font-medium text-ink-400 transition-colors hover:text-primary-400"
           >
             Sign out
           </button>

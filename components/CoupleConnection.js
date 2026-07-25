@@ -12,12 +12,12 @@ export default function CoupleConnection({ people, since }) {
   const [a, b] = people;
 
   return (
-    <div className="flex w-full flex-col items-center gap-2 rounded-2xl bg-white/70 p-4 shadow-soft animate-fade-up">
+    <div className="flex w-full flex-col items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-soft backdrop-blur-xl animate-fade-up">
       <div className="flex items-center justify-center gap-3">
         <div className="flex flex-col items-center gap-1.5">
           <Avatar
             name={a?.display_name}
-            className="h-14 w-14 text-lg ring-4 ring-white shadow-pop"
+            className="h-14 w-14 text-lg ring-4 ring-background shadow-glow"
           />
           <span className="max-w-16 truncate text-xs font-semibold text-ink-600">
             {a?.display_name}
@@ -34,7 +34,7 @@ export default function CoupleConnection({ people, since }) {
           <div className="flex flex-col items-center gap-1.5">
             <Avatar
               name={b.display_name}
-              className="h-14 w-14 text-lg ring-4 ring-white shadow-pop"
+              className="h-14 w-14 text-lg ring-4 ring-background shadow-glow"
             />
             <span className="max-w-16 truncate text-xs font-semibold text-ink-600">
               {b.display_name}
@@ -42,10 +42,10 @@ export default function CoupleConnection({ people, since }) {
           </div>
         ) : (
           <Link href="/pair" className="flex flex-col items-center gap-1.5">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-primary-300 text-xl text-primary-400 ring-4 ring-white">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-primary-400/50 text-xl text-primary-400 ring-4 ring-background">
               +
             </span>
-            <span className="max-w-16 truncate text-xs font-semibold text-primary-500">
+            <span className="max-w-16 truncate text-xs font-semibold text-primary-400">
               Invite
             </span>
           </Link>

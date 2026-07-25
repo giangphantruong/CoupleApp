@@ -13,7 +13,7 @@ export default function TimelinePhoto({ post, index = 0, align = "left" }) {
       style={{ transform: `rotate(${rotate}deg)`, transformOrigin: align === "left" ? "top left" : "top right" }}
     >
       {!post.url ? (
-        <div className="flex aspect-square w-full items-center justify-center rounded-sm bg-ink-50 text-xs text-ink-400">
+        <div className="flex aspect-square w-full items-center justify-center rounded-sm bg-stone-100 text-xs text-stone-400">
           &#9888;
         </div>
       ) : post.media_type === "video" ? (
@@ -32,7 +32,7 @@ export default function TimelinePhoto({ post, index = 0, align = "left" }) {
           className="aspect-square w-full rounded-sm object-cover"
         />
       )}
-      <p className="mt-1.5 truncate text-center font-display text-[11px] italic text-ink-500">
+      <p className="mt-1.5 truncate text-center font-display text-[11px] italic text-stone-600">
         {post.caption || time}
       </p>
     </div>

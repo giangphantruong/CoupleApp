@@ -142,11 +142,11 @@ export default function PairPage() {
         <p className="mt-2 text-sm text-ink-500">Share this code with them:</p>
         <button
           onClick={handleCopy}
-          className="mt-4 w-full rounded-xl border-2 border-dashed border-primary-300 bg-primary-50 py-5 font-display text-3xl font-semibold tracking-[0.3em] text-primary-700 transition-colors hover:bg-primary-100 active:scale-[0.98]"
+          className="mt-4 w-full rounded-xl border-2 border-dashed border-primary-500/40 bg-primary-500/10 py-5 font-display text-3xl font-semibold tracking-[0.3em] text-primary-300 transition-colors hover:bg-primary-500/15 active:scale-[0.98]"
         >
           {myCode}
         </button>
-        <p className="mt-2 text-sm font-medium text-primary-500">
+        <p className="mt-2 text-sm font-medium text-primary-400">
           {copied ? "Copied ✓" : "Tap to copy"}
         </p>
       </Card>
@@ -161,7 +161,7 @@ export default function PairPage() {
             onChange={(e) => setJoinCode(e.target.value)}
             className="text-center uppercase tracking-widest"
           />
-          {error && <p className="text-sm text-primary-700">{error}</p>}
+          {error && <p className="text-sm text-primary-400">{error}</p>}
           <Button type="submit" disabled={joining || !joinCode} className="w-full">
             {joining ? "Linking…" : "Link accounts"}
           </Button>

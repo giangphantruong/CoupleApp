@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import Card from "@/components/ui/Card";
-import Input from "@/components/ui/Input";
+import Field from "@/components/ui/Field";
 import Button from "@/components/ui/Button";
 
 export const dynamic = "force-dynamic";
@@ -74,34 +74,46 @@ export default function SignupPage() {
 
   return (
     <main className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-16">
-      <Card className="w-full max-w-xs p-6 animate-fade-up">
-        <h1 className="mb-6 text-center font-display text-2xl font-semibold text-ink-900">
-          Create your account
+      <div className="flex w-full max-w-sm flex-col items-center gap-2 text-center animate-fade-up">
+        <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-1 text-xs font-semibold tracking-[0.2em] text-primary-300 uppercase">
+          Start your story
+        </span>
+        <h1 className="font-display text-3xl font-semibold text-ink-900">
+          One account. Two people. Zero audience.
         </h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <Input
+        <p className="text-sm text-ink-500">
+          Set up your side in a few seconds — you&apos;ll link up with your partner right after.
+        </p>
+      </div>
+
+      <Card className="w-full max-w-sm p-6 animate-fade-up">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Field
+            label="Your name"
             type="text"
-            placeholder="Your name"
+            placeholder="What should we call you?"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             required
           />
-          <Input
+          <Field
+            label="Email"
             type="email"
-            placeholder="Email"
+            placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Input
+          <Field
+            label="Password"
             type="password"
-            placeholder="Password"
+            placeholder="At least 6 characters"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
           />
-          {error && <p className="text-sm text-primary-700">{error}</p>}
+          {error && <p className="text-sm text-primary-400">{error}</p>}
           <Button type="submit" disabled={loading} className="mt-1 w-full">
             {loading ? "Creating account…" : "Sign up"}
           </Button>
@@ -109,7 +121,7 @@ export default function SignupPage() {
       </Card>
       <p className="text-sm text-ink-500">
         Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-primary-600">
+        <Link href="/login" className="font-semibold text-primary-400">
           Log in
         </Link>
       </p>

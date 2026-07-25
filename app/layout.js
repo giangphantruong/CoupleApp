@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500", "600", "700", "900"],
   style: ["normal", "italic"],
 });
 
@@ -34,7 +34,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#ef4470",
+  themeColor: "#150a10",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

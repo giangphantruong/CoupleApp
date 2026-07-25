@@ -74,7 +74,7 @@ export default function TimelinePage() {
     if (!tableRef.current) return;
     setExporting(true);
     try {
-      const dataUrl = await toPng(tableRef.current, { pixelRatio: 2, backgroundColor: "#fff8f6" });
+      const dataUrl = await toPng(tableRef.current, { pixelRatio: 2, backgroundColor: "#ffffff" });
       const link = document.createElement("a");
       link.download = `timeline-${date}.png`;
       link.href = dataUrl;
@@ -112,7 +112,7 @@ export default function TimelinePage() {
               type="date"
               value={date}
               onChange={(e) => handleDateChange(e.target.value)}
-              className="rounded-xl border border-ink-100 bg-white px-3 py-2 text-sm text-ink-700 shadow-soft focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-100"
+              className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-ink-700 shadow-soft focus:border-primary-400 focus:outline-none focus:ring-4 focus:ring-primary-500/20"
             />
             <Button
               onClick={handleExport}
@@ -153,7 +153,7 @@ export default function TimelinePage() {
           {!loading && rows.length === 0 && (
             <div className="flex flex-col items-center gap-2 py-14 text-center">
               <span className="text-3xl">📭</span>
-              <p className="text-ink-500">No posts on this day yet.</p>
+              <p className="text-stone-500">No posts on this day yet.</p>
             </div>
           )}
 

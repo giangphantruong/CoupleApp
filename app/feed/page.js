@@ -94,8 +94,8 @@ export default function FeedPage() {
               <div key={i} className="h-72 w-full animate-shimmer rounded-2xl" />
             ))}
           {!loadingPosts && posts.length === 0 && (
-            <div className="flex flex-col items-center gap-2 rounded-2xl bg-white/70 py-14 text-center shadow-soft">
-              <span className="text-3xl">🤍</span>
+            <div className="flex flex-col items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] py-14 text-center shadow-soft backdrop-blur-xl">
+              <span className="text-3xl">🔥</span>
               <p className="text-ink-500">
                 Nothing posted yet — take the first photo together!
               </p>

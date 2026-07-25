@@ -12,7 +12,7 @@ export default function PostCard({ post }) {
   });
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl bg-white shadow-soft">
+    <div className="w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-soft backdrop-blur-xl">
       <div className="relative">
         {!loaded && post.url && (
           <div className="absolute inset-0 animate-shimmer" />
@@ -42,7 +42,7 @@ export default function PostCard({ post }) {
       <div className="flex items-center gap-3 p-3">
         <Avatar name={post.profiles?.display_name} className="h-8 w-8 text-sm" />
         <div className="flex flex-col">
-          <p className="text-sm font-semibold text-ink-800">
+          <p className="text-sm font-semibold text-ink-700">
             {post.profiles?.display_name} <span className="font-normal text-ink-400">· {time}</span>
           </p>
           {post.caption && <p className="text-sm text-ink-600">{post.caption}</p>}

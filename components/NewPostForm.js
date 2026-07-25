@@ -47,7 +47,7 @@ export default function NewPostForm({ coupleId, userId, onPosted }) {
       onSubmit={handleSubmit}
       className="flex w-full flex-col gap-3 p-4"
     >
-      <label className="group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary-200 bg-primary-50/60 px-4 py-6 text-center transition-colors hover:border-primary-400 hover:bg-primary-50">
+      <label className="group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary-500/30 bg-primary-500/[0.06] px-4 py-6 text-center transition-colors hover:border-primary-400 hover:bg-primary-500/10">
         {previewUrl ? (
           file?.type.startsWith("video") ? (
             <video src={previewUrl} className="max-h-48 rounded-lg" muted />
@@ -58,13 +58,13 @@ export default function NewPostForm({ coupleId, userId, onPosted }) {
         ) : (
           <>
             <span className="text-2xl">📸</span>
-            <span className="text-sm font-medium text-primary-600">
+            <span className="text-sm font-medium text-primary-300">
               Tap to add a photo or video
             </span>
           </>
         )}
         {previewUrl && (
-          <span className="text-xs font-medium text-primary-500 group-hover:underline">
+          <span className="text-xs font-medium text-primary-400 group-hover:underline">
             Tap to change
           </span>
         )}
@@ -82,7 +82,7 @@ export default function NewPostForm({ coupleId, userId, onPosted }) {
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
       />
-      {error && <p className="text-sm text-primary-700">{error}</p>}
+      {error && <p className="text-sm text-primary-400">{error}</p>}
       <Button type="submit" disabled={!file || uploading} className="w-full">
         {uploading ? "Posting…" : "Post"}
       </Button>

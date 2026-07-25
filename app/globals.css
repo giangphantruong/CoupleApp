@@ -1,33 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fff8f6;
-  --foreground: #3d2b30;
+  --background: #150a10;
+  --foreground: #f8eef1;
 
-  --color-primary-50: #fff5f7;
-  --color-primary-100: #ffe4ea;
-  --color-primary-200: #ffc9d4;
-  --color-primary-300: #ffa0b4;
-  --color-primary-400: #fb6f93;
-  --color-primary-500: #ef4470;
-  --color-primary-600: #d92662;
-  --color-primary-700: #b31650;
-  --color-primary-800: #8f1140;
-  --color-primary-900: #5c0e2c;
+  /* Hot crimson — the brand color, punchier than a soft pink */
+  --color-primary-50: #fff0f3;
+  --color-primary-100: #ffd9df;
+  --color-primary-200: #ffb0bd;
+  --color-primary-300: #ff7d95;
+  --color-primary-400: #fa4267;
+  --color-primary-500: #ef1f4c;
+  --color-primary-600: #c81141;
+  --color-primary-700: #9e0d36;
+  --color-primary-800: #75092a;
+  --color-primary-900: #4a0620;
 
-  --color-accent-400: #f2b544;
-  --color-accent-500: #e59d1f;
+  /* Fiery orange — pairs with primary for the "energy" gradient */
+  --color-accent-400: #ff9838;
+  --color-accent-500: #ff7a1a;
+  --color-accent-600: #e85f00;
 
-  --color-ink-50: #fbf7f5;
-  --color-ink-100: #f3e9e6;
-  --color-ink-400: #a7898f;
-  --color-ink-500: #85666c;
-  --color-ink-600: #6b4d53;
-  --color-ink-700: #513740;
-  --color-ink-900: #2e1f24;
+  /* Violet — depth/contrast for gradients and glows */
+  --color-violet-400: #c65cff;
+  --color-violet-500: #a821e0;
 
-  --shadow-soft: 0 1px 2px rgba(93, 30, 55, 0.04), 0 8px 24px -8px rgba(93, 30, 55, 0.14);
-  --shadow-pop: 0 4px 10px rgba(93, 30, 55, 0.08), 0 16px 40px -12px rgba(93, 30, 55, 0.22);
+  /* Neutral text scale for the dark surface — 900 = brightest (headings), 50 = subtlest */
+  --color-ink-50: #1c1216;
+  --color-ink-100: #2e2126;
+  --color-ink-400: #a58f96;
+  --color-ink-500: #c3aeb5;
+  --color-ink-600: #ddd0d5;
+  --color-ink-700: #efe6e9;
+  --color-ink-900: #fdf8fa;
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 4px 12px rgba(0, 0, 0, 0.35), 0 20px 48px -12px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 0 1px rgba(239, 31, 76, 0.4), 0 8px 30px -6px rgba(239, 31, 76, 0.55);
 }
 
 @theme inline {
@@ -47,6 +56,10 @@
 
   --color-accent-400: var(--color-accent-400);
   --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+
+  --color-violet-400: var(--color-violet-400);
+  --color-violet-500: var(--color-violet-500);
 
   --color-ink-50: var(--color-ink-50);
   --color-ink-100: var(--color-ink-100);
@@ -62,12 +75,14 @@
 
   --shadow-soft: var(--shadow-soft);
   --shadow-pop: var(--shadow-pop);
+  --shadow-glow: var(--shadow-glow);
 }
 
 body {
   background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(255, 201, 212, 0.55) 0%, transparent 55%),
-    radial-gradient(900px 500px at 110% 8%, rgba(242, 181, 68, 0.18) 0%, transparent 45%),
+    radial-gradient(900px 500px at 12% -8%, rgba(239, 31, 76, 0.35) 0%, transparent 55%),
+    radial-gradient(800px 500px at 105% 10%, rgba(255, 122, 26, 0.22) 0%, transparent 50%),
+    radial-gradient(700px 600px at 50% 115%, rgba(168, 33, 224, 0.18) 0%, transparent 50%),
     var(--background);
   background-attachment: fixed;
   color: var(--foreground);
@@ -98,7 +113,7 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, var(--color-ink-100) 25%, var(--color-primary-100) 37%, var(--color-ink-100) 63%);
+  background: linear-gradient(90deg, var(--color-ink-100) 25%, var(--color-primary-900) 37%, var(--color-ink-100) 63%);
   background-size: 400% 100%;
   animation: shimmer 1.4s ease infinite;
 }

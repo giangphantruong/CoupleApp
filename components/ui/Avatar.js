@@ -1,8 +1,4 @@
-const PALETTE = [
-  "bg-primary-500",
-  "bg-accent-500",
-  "bg-ink-600",
-];
+const PALETTE = ["bg-primary-500", "bg-accent-500", "bg-violet-500"];
 
 function colorFor(name) {
   const code = (name || "?").charCodeAt(0) || 0;
