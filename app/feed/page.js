@@ -8,6 +8,7 @@ import { getSignedUrl } from "@/lib/media";
 import NewPostForm from "@/components/NewPostForm";
 import PostCard from "@/components/PostCard";
 import NavBar from "@/components/NavBar";
+import CoupleConnection from "@/components/CoupleConnection";
 
 // This page depends on the logged-in user's session, so it can't be pre-built
 // as static HTML — it has to run fresh each time someone visits it.
@@ -16,6 +17,8 @@ export const dynamic = "force-dynamic";
 export default function FeedPage() {
   const router = useRouter();
   const [profile, setProfile] = useState(null);
+  const [people, setPeople] = useState([]);
+  const [coupleSince, setCoupleSince] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
 
@@ -43,6 +46,20 @@ export default function FeedPage() {
       }
       setProfile(currentProfile);
       loadPosts(currentProfile.couple_id);
+
+      const { data: couplePeople } = await supabase
+        .from("profiles")
+        .select("id, display_name")
+        .eq("couple_id", currentProfile.couple_id)
+        .order("id", { ascending: true });
+      setPeople(couplePeople || []);
+
+      const { data: couple } = await supabase
+        .from("couples")
+        .select("created_at")
+        .eq("id", currentProfile.couple_id)
+        .single();
+      setCoupleSince(couple?.created_at ?? null);
     }
     load();
   }, [router, loadPosts]);
@@ -59,6 +76,10 @@ export default function FeedPage() {
     <>
       <NavBar profile={profile} />
       <main className="flex flex-1 flex-col items-center gap-4 px-4 py-6">
+        <div className="w-full max-w-md">
+          <CoupleConnection people={people.length ? people : [profile]} since={coupleSince} />
+        </div>
+
         <div className="w-full max-w-md animate-fade-up">
           <NewPostForm
             coupleId={profile.couple_id}
