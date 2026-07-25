@@ -80,27 +80,25 @@ create policy "create pairing codes" on pairing_codes
   for insert with check (created_by = auth.uid());
 
 create policy "mark own couple's posts" on posts
-  for all using (
-    couple_id in (select couple_id from profiles where id = auth.uid())
-  );
+  for all using (couple_id = my_couple_id());
 
 -- Storage: where the actual photo/video files live (the database only stores their path).
 -- We'll upload files under a path like "<couple_id>/<random-filename>.jpg" and use that
--- prefix to keep couples from ever reading each other's files.
+-- prefix to keep couples from ever reading each other's files. Routed through
+-- my_couple_id() rather than a raw "select ... from profiles" subquery, same as
+-- posts above — a cross-schema policy (storage.objects checking public.profiles,
+-- itself RLS-protected) is exactly the shape that broke unpredictably elsewhere
+-- in this project, so every couple_id lookup goes through the one bypass-RLS path.
 insert into storage.buckets (id, name, public) values ('media', 'media', false);
 
 create policy "read own couple's media" on storage.objects
   for select using (
     bucket_id = 'media'
-    and (storage.foldername(name))[1]::uuid in (
-      select couple_id from profiles where id = auth.uid()
-    )
+    and (storage.foldername(name))[1]::uuid = my_couple_id()
   );
 
 create policy "upload to own couple's media" on storage.objects
   for insert with check (
     bucket_id = 'media'
-    and (storage.foldername(name))[1]::uuid in (
-      select couple_id from profiles where id = auth.uid()
-    )
+    and (storage.foldername(name))[1]::uuid = my_couple_id()
   );
