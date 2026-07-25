@@ -51,8 +51,21 @@ alter table profiles enable row level security;
 alter table pairing_codes enable row level security;
 alter table posts enable row level security;
 
-create policy "read own profile" on profiles
-  for select using (id = auth.uid());
+-- A profiles policy that reads couple_id from profiles itself would recurse
+-- (Postgres detects and rejects that), so the couple_id lookup is done through
+-- this security-definer helper, which runs with RLS bypassed internally.
+create function my_couple_id()
+returns uuid
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select couple_id from profiles where id = auth.uid()
+$$;
+
+create policy "read own couple's profiles" on profiles
+  for select using (couple_id = my_couple_id());
 
 create policy "update own profile" on profiles
   for update using (id = auth.uid());
