@@ -74,7 +74,7 @@ export default function TimelinePage() {
     if (!tableRef.current) return;
     setExporting(true);
     try {
-      const dataUrl = await toPng(tableRef.current, { pixelRatio: 2, backgroundColor: "#ffffff" });
+      const dataUrl = await toPng(tableRef.current, { pixelRatio: 2, backgroundColor: "#150a10" });
       const link = document.createElement("a");
       link.download = `timeline-${date}.png`;
       link.href = dataUrl;
@@ -89,6 +89,11 @@ export default function TimelinePage() {
   const rows = groupPostsByHour(posts);
   const [personA, personB] = people;
   const solo = people.length < 2;
+  const formattedDate = new Date(`${date}T00:00:00`).toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
 
   if (!profile) {
     return (
@@ -133,10 +138,19 @@ export default function TimelinePage() {
 
         <div
           ref={tableRef}
-          className="w-full max-w-2xl rounded-2xl bg-white p-5 shadow-pop animate-fade-up sm:p-8"
+          className="w-full max-w-2xl rounded-2xl border border-white/10 bg-gradient-to-b from-[#1c1015] to-[#120a0f] p-5 shadow-pop animate-fade-up sm:p-8"
         >
+          <div className="mb-6 flex items-center justify-between">
+            <span className="bg-gradient-to-r from-primary-300 to-accent-400 bg-clip-text font-display text-lg font-bold text-transparent italic">
+              Us.
+            </span>
+            <span className="text-xs font-semibold tracking-[0.15em] text-ink-400 uppercase">
+              {formattedDate}
+            </span>
+          </div>
+
           {!solo && (
-            <div className="mb-6 flex items-center justify-between text-sm font-semibold text-primary-700">
+            <div className="mb-6 flex items-center justify-between text-sm font-semibold text-primary-300">
               <span>{personA?.display_name}</span>
               <span>{personB?.display_name}</span>
             </div>
@@ -153,13 +167,13 @@ export default function TimelinePage() {
           {!loading && rows.length === 0 && (
             <div className="flex flex-col items-center gap-2 py-14 text-center">
               <span className="text-3xl">📭</span>
-              <p className="text-stone-500">No posts on this day yet.</p>
+              <p className="text-ink-500">No posts on this day yet.</p>
             </div>
           )}
 
           {!loading && rows.length > 0 && (
             <div className="relative">
-              <div className="absolute top-1 bottom-1 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-primary-200 via-primary-300 to-primary-200" />
+              <div className="absolute top-1 bottom-1 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-primary-500/20 via-primary-400 to-primary-500/20 shadow-glow" />
               <div className="flex flex-col gap-8">
                 {rows.map(([hour, hourPosts]) => {
                   const leftPosts = solo
@@ -178,7 +192,7 @@ export default function TimelinePage() {
                       </div>
 
                       <div className="z-10 flex flex-col items-center pt-0.5">
-                        <span className="rounded-full bg-primary-500 px-3 py-1 text-xs font-semibold whitespace-nowrap text-white shadow-soft">
+                        <span className="rounded-full bg-gradient-to-r from-primary-500 to-accent-500 px-3 py-1 text-xs font-semibold whitespace-nowrap text-white shadow-glow">
                           {formatHourLabel(hour)}
                         </span>
                       </div>

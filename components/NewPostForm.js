@@ -5,6 +5,7 @@ import { uploadPost } from "@/lib/media";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import LiveCamera from "@/components/LiveCamera";
 
 export default function NewPostForm({ coupleId, userId, onPosted }) {
   const [file, setFile] = useState(null);
@@ -32,7 +33,6 @@ export default function NewPostForm({ coupleId, userId, onPosted }) {
       await uploadPost({ coupleId, userId, file, caption });
       setFile(null);
       setCaption("");
-      e.target.reset();
       onPosted();
     } catch (err) {
       setError(err.message);
@@ -42,45 +42,52 @@ export default function NewPostForm({ coupleId, userId, onPosted }) {
   }
 
   return (
-    <Card
-      as="form"
-      onSubmit={handleSubmit}
-      className="flex w-full flex-col gap-3 p-4"
-    >
-      <label className="group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary-500/30 bg-primary-500/[0.06] px-4 py-6 text-center transition-colors hover:border-primary-400 hover:bg-primary-500/10">
-        {previewUrl ? (
-          file?.type.startsWith("video") ? (
-            <video src={previewUrl} className="max-h-48 rounded-lg" muted />
+    <Card as="form" onSubmit={handleSubmit} className="flex w-full flex-col items-center gap-4 p-4">
+      {previewUrl ? (
+        <div className="relative">
+          {file?.type.startsWith("video") ? (
+            <video
+              src={previewUrl}
+              controls
+              className="h-64 w-64 rounded-full object-cover shadow-glow sm:h-72 sm:w-72"
+            />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={previewUrl} alt="Selected preview" className="max-h-48 rounded-lg object-contain" />
-          )
-        ) : (
-          <>
-            <span className="text-2xl">📸</span>
-            <span className="text-sm font-medium text-primary-300">
-              Tap to add a photo or video
-            </span>
-          </>
-        )}
-        {previewUrl && (
-          <span className="text-xs font-medium text-primary-400 group-hover:underline">
-            Tap to change
-          </span>
-        )}
+            <img
+              src={previewUrl}
+              alt="Selected preview"
+              className="h-64 w-64 rounded-full border-4 border-primary-500/40 object-cover shadow-glow sm:h-72 sm:w-72"
+            />
+          )}
+          <button
+            type="button"
+            onClick={() => setFile(null)}
+            className="absolute top-2 right-2 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-lg text-white backdrop-blur-sm"
+            aria-label="Retake"
+          >
+            &#10005;
+          </button>
+        </div>
+      ) : (
+        <LiveCamera onCapture={setFile} />
+      )}
+
+      <label className="cursor-pointer text-xs font-medium text-ink-400 underline decoration-dotted hover:text-primary-400">
+        or upload from your gallery
         <input
           type="file"
           accept="image/*,video/*"
-          capture="environment"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
           className="hidden"
         />
       </label>
+
       <Input
         type="text"
         placeholder="Say something about it (optional)"
         value={caption}
         onChange={(e) => setCaption(e.target.value)}
+        className="w-full"
       />
       {error && <p className="text-sm text-primary-400">{error}</p>}
       <Button type="submit" disabled={!file || uploading} className="w-full">
