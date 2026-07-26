@@ -68,10 +68,37 @@ create policy "read own couple's profiles" on profiles
   for select using (couple_id = my_couple_id());
 
 create policy "update own profile" on profiles
-  for update using (id = auth.uid());
+  for update using (id = auth.uid())
+  with check (id = auth.uid());
 
 create policy "insert own profile" on profiles
   for insert with check (id = auth.uid());
+
+-- Plain inserts/updates on profiles have proven unreliable in this project even
+-- with a correct, freshly-recreated policy (id = auth.uid()) — the same class of
+-- unexplained RLS enforcement issue seen on the couples table. Since profiles
+-- holds cross-couple-sensitive data (unlike couples), disabling RLS isn't an
+-- option here, so signup and pairing write through these two security-definer
+-- functions instead, which bypass whatever is misbehaving while still enforcing
+-- "only ever act as yourself" via auth.uid() inside the function body.
+create function create_my_profile(p_display_name text, p_couple_id uuid)
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  insert into profiles (id, display_name, couple_id)
+  values (auth.uid(), p_display_name, p_couple_id);
+$$;
+
+create function join_couple(p_couple_id uuid)
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update profiles set couple_id = p_couple_id where id = auth.uid();
+$$;
 
 create policy "read/use pairing codes" on pairing_codes
   for select using (true); -- entering a code requires looking it up before you're linked

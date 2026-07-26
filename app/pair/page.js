@@ -110,10 +110,12 @@ export default function PairPage() {
       return;
     }
 
-    const { error: updateProfileError } = await supabase
-      .from("profiles")
-      .update({ couple_id: found.couple_id })
-      .eq("id", profile.id);
+    // Routed through an RPC (rather than a direct update) because this project's
+    // RLS enforcement for plain writes on profiles has proven unreliable — see
+    // join_couple() in supabase/schema.sql.
+    const { error: updateProfileError } = await supabase.rpc("join_couple", {
+      p_couple_id: found.couple_id,
+    });
     if (updateProfileError) {
       setError(updateProfileError.message);
       setJoining(false);

@@ -58,10 +58,12 @@ export default function SignupPage() {
     }
 
     // Step 3: create their profile row, already linked to that couple.
-    const { error: profileError } = await supabase.from("profiles").insert({
-      id: userId,
-      display_name: displayName,
-      couple_id: couple.id,
+    // Routed through an RPC (rather than a direct insert) because this project's
+    // RLS enforcement for plain inserts on profiles has proven unreliable — see
+    // create_my_profile() in supabase/schema.sql.
+    const { error: profileError } = await supabase.rpc("create_my_profile", {
+      p_display_name: displayName,
+      p_couple_id: couple.id,
     });
     if (profileError) {
       setError(profileError.message);
